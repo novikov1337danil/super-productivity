@@ -26,8 +26,9 @@ import {
   SortOption,
 } from './types';
 import { DateAdapter } from '@angular/material/core';
-import { DEFAULT_FIRST_DAY_OF_WEEK } from 'src/app/core/locale.constants';
+import { DEFAULT_FIRST_DAY_OF_WEEK, DEFAULT_LOCALE } from 'src/app/core/locale.constants';
 import { LS } from '../../core/persistence/storage-keys.const';
+import { LanguageService } from 'src/app/core/language/language.service';
 
 describe('TaskViewCustomizerService', () => {
   let service: TaskViewCustomizerService;
@@ -39,6 +40,7 @@ describe('TaskViewCustomizerService', () => {
   };
   let projectUpdateSpy: jasmine.Spy;
   let tagUpdateSpy: jasmine.Spy;
+  const mockLanguageService = { detect: () => DEFAULT_LOCALE };
 
   const todayStr = getDbDateStr(new Date());
   const tomorrowStr = getDbDateStr(getTomorrow());
@@ -132,6 +134,10 @@ describe('TaskViewCustomizerService', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        {
+          provide: LanguageService,
+          useValue: mockLanguageService,
+        },
         TaskViewCustomizerService,
         { provide: DateAdapter, useValue: dateAdapter },
         { provide: WorkContextService, useValue: mockWorkContextService },
@@ -237,6 +243,91 @@ describe('TaskViewCustomizerService', () => {
     expect(sorted.asc[1].title).toBe('Beta');
     expect(sorted.desc[0].title).toBe('Zebra');
     expect(sorted.desc[1].title).toBe('Third Task');
+  });
+
+  it('should sort numeric prefixes in title correctly', () => {
+    const numericTasks: TaskWithSubTasks[] = [
+      {
+        id: 't1',
+        title: '1 task',
+        tagIds: [],
+        projectId: 'Project A',
+        created: 1,
+        subTasks: [],
+        subTaskIds: [],
+        timeEstimate: 0,
+        timeSpent: 0,
+        timeSpentOnDay: {},
+        isDone: false,
+        attachments: [],
+      },
+      {
+        id: 't2',
+        title: '10 task',
+        tagIds: [],
+        projectId: 'Project A',
+        created: 2,
+        subTasks: [],
+        subTaskIds: [],
+        timeEstimate: 0,
+        timeSpent: 0,
+        timeSpentOnDay: {},
+        isDone: false,
+        attachments: [],
+      },
+      {
+        id: 't3',
+        title: '11 task',
+        tagIds: [],
+        projectId: 'Project A',
+        created: 3,
+        subTasks: [],
+        subTaskIds: [],
+        timeEstimate: 0,
+        timeSpent: 0,
+        timeSpentOnDay: {},
+        isDone: false,
+        attachments: [],
+      },
+      {
+        id: 't4',
+        title: '2 task',
+        tagIds: [],
+        projectId: 'Project A',
+        created: 4,
+        subTasks: [],
+        subTaskIds: [],
+        timeEstimate: 0,
+        timeSpent: 0,
+        timeSpentOnDay: {},
+        isDone: false,
+        attachments: [],
+      },
+      {
+        id: 't5',
+        title: '3 task',
+        tagIds: [],
+        projectId: 'Project A',
+        created: 5,
+        subTasks: [],
+        subTaskIds: [],
+        timeEstimate: 0,
+        timeSpent: 0,
+        timeSpentOnDay: {},
+        isDone: false,
+        attachments: [],
+      },
+    ];
+
+    const sorted = service['applySort'](numericTasks, SORT_OPTION_TYPE.name);
+
+    expect(sorted.map((t) => t.title)).toEqual([
+      '1 task',
+      '2 task',
+      '3 task',
+      '10 task',
+      '11 task',
+    ]);
   });
 
   it('should sort by tag (primary alphabetical tag title), with untagged last', () => {
@@ -527,6 +618,10 @@ describe('TaskViewCustomizerService', () => {
       TestBed.configureTestingModule({
         providers: [
           TaskViewCustomizerService,
+          {
+            provide: LanguageService,
+            useValue: mockLanguageService,
+          },
           { provide: DateAdapter, useValue: dateAdapter },
           { provide: WorkContextService, useValue: mockWorkContextService },
           { provide: ProjectService, useValue: { update: projectUpdateSpy } },
@@ -559,6 +654,10 @@ describe('TaskViewCustomizerService', () => {
       TestBed.configureTestingModule({
         providers: [
           TaskViewCustomizerService,
+          {
+            provide: LanguageService,
+            useValue: mockLanguageService,
+          },
           { provide: DateAdapter, useValue: dateAdapter },
           { provide: WorkContextService, useValue: mockWorkContextService },
           { provide: ProjectService, useValue: { update: projectUpdateSpy } },
@@ -595,6 +694,10 @@ describe('TaskViewCustomizerService', () => {
       TestBed.configureTestingModule({
         providers: [
           TaskViewCustomizerService,
+          {
+            provide: LanguageService,
+            useValue: mockLanguageService,
+          },
           { provide: DateAdapter, useValue: dateAdapter },
           { provide: WorkContextService, useValue: mockWorkContextService },
           { provide: ProjectService, useValue: { update: projectUpdateSpy } },

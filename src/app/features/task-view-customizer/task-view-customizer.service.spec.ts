@@ -83,7 +83,7 @@ describe('TaskViewCustomizerService', () => {
       timeSpent: 120000,
       isDone: false,
       attachments: [],
-    } as TaskWithSubTasks,
+    },
     {
       id: 'Third Task(Tag A, Tag B)',
       title: 'Third Task',
@@ -98,7 +98,7 @@ describe('TaskViewCustomizerService', () => {
       timeSpent: 120000,
       isDone: false,
       attachments: [],
-    } as TaskWithSubTasks,
+    },
     {
       id: 'Zebra(-)',
       title: 'Zebra',
@@ -113,7 +113,7 @@ describe('TaskViewCustomizerService', () => {
       timeSpent: 0,
       isDone: false,
       attachments: [],
-    } as TaskWithSubTasks,
+    },
   ];
 
   beforeEach(() => {
@@ -331,7 +331,7 @@ describe('TaskViewCustomizerService', () => {
   });
 
   it('should sort by tag (primary alphabetical tag title), with untagged last', () => {
-    const extra = [
+    const extra: TaskWithSubTasks[] = [
       {
         id: 'Aardvark(-)',
         title: 'Aardvark',
@@ -345,7 +345,7 @@ describe('TaskViewCustomizerService', () => {
         timeSpentOnDay: {},
         isDone: false,
         attachments: [],
-      } as TaskWithSubTasks,
+      },
     ];
     const arr: TaskWithSubTasks[] = [...mockTasks, ...extra];
 
@@ -381,7 +381,7 @@ describe('TaskViewCustomizerService', () => {
         timeSpentOnDay: {},
         isDone: false,
         attachments: [],
-      } as TaskWithSubTasks,
+      },
       {
         id: 'tB',
         title: 'Alpha2',
@@ -395,7 +395,7 @@ describe('TaskViewCustomizerService', () => {
         timeSpentOnDay: {},
         isDone: false,
         attachments: [],
-      } as TaskWithSubTasks,
+      },
     ];
     const sorted = service['applySort'](samePrimary, SORT_OPTION_TYPE.tag);
 
@@ -452,7 +452,7 @@ describe('TaskViewCustomizerService', () => {
       timeSpent: 0,
       isDone: false,
       attachments: [],
-    } as TaskWithSubTasks;
+    };
 
     const tasksWithTimeTask = [...mockTasks, taskWithTime];
     const grouped = service['applyGrouping'](
@@ -479,7 +479,7 @@ describe('TaskViewCustomizerService', () => {
       timeSpent: 0,
       isDone: false,
       attachments: [],
-    } as TaskWithSubTasks;
+    };
 
     const grouped = service['applyGrouping'](
       [taskWithoutSchedule],

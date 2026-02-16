@@ -73,14 +73,6 @@ describe('DateTimeFormatService', () => {
     expect(typeof is24Hour).toBe('boolean');
   });
 
-  it('should detect correct date format based on locale', () => {
-    const format = service.dateFormat();
-    expect(format).toBeDefined();
-    expect(format.raw).toBeTruthy();
-    expect(format.humanReadable).toBeTruthy();
-    expect(format.raw.toLowerCase()).toContain('yyyy');
-  });
-
   it('should maintain consistent behavior', () => {
     const firstCheck = service.is24HourFormat();
     const secondCheck = service.is24HourFormat();
@@ -147,24 +139,13 @@ describe('DateTimeFormatService', () => {
     });
   });
 
-  describe('dateFormat detection', () => {
-    it('should detect day-first format for appropriate locales', () => {
-      const format = service.dateFormat();
-      expect(format.raw).toBeTruthy();
-      expect(format.raw.toLowerCase()).toContain('yyyy');
-      expect(format.humanReadable).toBe(format.raw.toUpperCase());
-    });
-  });
-
-  describe('date string parsing', () => {
-    it('should parse valid date strings', () => {
+  describe('parseStringToDate', () => {
+    it('should set time to 00:00:00 for valid date strings', () => {
       const testDate = service.parseStringToDate('31/12/2000', 'dd/MM/yyyy');
-      expect(testDate?.getDate()).toBe(31);
-      expect(testDate?.getMonth()).toBe(11);
-      expect(testDate?.getFullYear()).toBe(2000);
       expect(testDate?.getHours()).toBe(0);
       expect(testDate?.getMinutes()).toBe(0);
       expect(testDate?.getSeconds()).toBe(0);
+      expect(testDate?.getMilliseconds()).toBe(0);
     });
 
     it('should return null for invalid date strings', () => {

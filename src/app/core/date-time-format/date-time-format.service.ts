@@ -19,9 +19,20 @@ export class DateTimeFormatService {
   private readonly _testFormats = computed(() => {
     const locale = this.currentLocale();
     const testDate = new Date(2000, 11, 31, 13, 0, 0);
+
     return {
+      // "1:00 PM" (en-US) | "13:00" (en-GB)
       time: testDate.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' }),
-      date: testDate.toLocaleDateString(locale),
+      date: {
+        // "12/31/2000" (en-US) | "31/12/2000" (en-GB)
+        raw: testDate.toLocaleDateString(locale),
+        // "MM/dd/yyyy" (en-US) | "dd/MM/yyyy" (en-GB)
+        format: testDate
+          .toLocaleDateString(locale)
+          .replace('31', 'dd')
+          .replace('12', 'MM')
+          .replace('2000', 'yyyy'),
+      },
     };
   });
 
@@ -33,15 +44,10 @@ export class DateTimeFormatService {
   /** Detects the actual date format based on locale ('dd/MM/yyyy', 'MM/dd/yyyy', 'dd.MM.yyyy', etc) */
   readonly dateFormat = computed(() => {
     const localizedDate = this._testFormats().date;
-    const separator = this.extractSeparator(localizedDate);
-
-    const isDayFirst = localizedDate.startsWith('31');
-    const format = isDayFirst ? 'dd' : 'MM';
-    const fullFormat = `${format}${separator}${isDayFirst ? 'MM' : 'dd'}${separator}yyyy`;
 
     return {
-      raw: fullFormat,
-      humanReadable: fullFormat.toUpperCase(),
+      raw: localizedDate.format,
+      humanReadable: localizedDate.format.toUpperCase(),
     };
   });
 

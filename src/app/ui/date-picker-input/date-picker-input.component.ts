@@ -18,6 +18,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { T } from 'src/app/t.const';
 import { getDbDateStr } from 'src/app/util/get-db-date-str';
 
+type DateValue = Date | null;
+
 @Component({
   selector: 'date-picker-input',
   standalone: true,
@@ -55,9 +57,9 @@ export class DatePickerInputComponent implements ControlValueAccessor {
   isInvalid = input<boolean | undefined>(undefined); // boolean - validation control by parent, undefined - internal validation
   errorMessage = input<string | undefined>(undefined); // instead of default error message
 
-  innerValue: Date | null = null;
+  innerValue: DateValue = null;
 
-  private toDate(value: Date | string): Date {
+  toDate(value: Date | string): Date {
     return value instanceof Date ? value : new Date(value);
   }
 
@@ -66,12 +68,18 @@ export class DatePickerInputComponent implements ControlValueAccessor {
     return getDbDateStr(this.toDate(value));
   }
 
+  validateDate(value: Date): boolean {
+    const minDate = this.toDate(this.min());
+    const maxDate = this.toDate(this.max());
+    return value >= minDate && value <= maxDate;
+  }
+
   writeValue(value: unknown): void {
     if (!value || !(value instanceof Date)) this.innerValue = null;
     else this.innerValue = this.toDate(value);
   }
 
-  onValueChange(value: Date | null): void {
+  onValueChange(value: DateValue): void {
     if (!value) {
       this.innerValue = null;
       this.onChange(null);
@@ -79,11 +87,7 @@ export class DatePickerInputComponent implements ControlValueAccessor {
       return;
     }
 
-    const minDate = this.toDate(this.min());
-    const maxDate = this.toDate(this.max());
-
-    // Валидируем против min и max
-    if (value < minDate || value > maxDate) {
+    if (!this.validateDate(value)) {
       this.innerValue = null;
       this.onChange(null);
     } else {
@@ -93,11 +97,11 @@ export class DatePickerInputComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  private onChange: (value: Date | null) => void = () => {};
+  private onChange: (value: DateValue) => void = () => {};
 
   private onTouched: () => void = () => {};
 
-  registerOnChange(fn: (value: Date | null) => void): void {
+  registerOnChange(fn: (value: DateValue) => void): void {
     this.onChange = fn;
   }
 

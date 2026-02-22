@@ -19,7 +19,7 @@
             | translate
               : {
                   date: newEntry.date
-                    ? (newEntry.date | localeDate: 'shortDate')
+                    ? (newEntry.date | localeDate: dateTimeFormatService.dateFormat().raw)
                     : dateTimeFormatService.dateFormat().humanReadable,
                 }
         }}

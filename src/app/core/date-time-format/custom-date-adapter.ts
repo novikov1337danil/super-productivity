@@ -27,12 +27,6 @@ export class CustomDateAdapter extends NativeDateAdapter {
   }
 
   override parse(value: any, format: string): Date | null {
-    console.log(
-      '[CustomDateAdapter] parse called with value:',
-      value,
-      'and format:',
-      format,
-    );
     if (!value) return null;
     if (value instanceof Date) return this.isValid(value) ? value : null;
     if (typeof value !== 'string') return super.parse(value, format);
@@ -50,12 +44,6 @@ export class CustomDateAdapter extends NativeDateAdapter {
     date: Date,
     displayFormat: Intl.DateTimeFormatOptions | string,
   ): string {
-    console.log(
-      '[CustomDateAdapter] format called with date:',
-      date,
-      'and displayFormat:',
-      displayFormat,
-    );
     if (!this.isValid(date)) throw Error('DateAdapter: Cannot format invalid date.');
 
     // locale-specific format

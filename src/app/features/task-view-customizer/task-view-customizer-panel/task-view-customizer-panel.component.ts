@@ -22,7 +22,6 @@ import {
   PRESETS,
 } from '../types';
 import { TaskViewCustomizerMenuItemComponent } from './menu-item/menu-item.component';
-import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'task-view-customizer-panel',
@@ -40,7 +39,6 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatSlideToggleModule,
     MatMenuModule,
     MatIconModule,
-    MatTooltip,
     MatDividerModule,
     TranslatePipe,
     TaskViewCustomizerMenuItemComponent,

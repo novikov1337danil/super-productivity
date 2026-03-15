@@ -1,4 +1,3 @@
-/* eslint-disable prefer-arrow/prefer-arrow-functions */
 /**
  * localStorage utility functions for Super Productivity
  */
@@ -50,6 +49,8 @@ export const lsGetBoolean = (key: string, defaultValue = false): boolean => {
  */
 export function lsGetJSON<T>(key: string): T | null;
 export function lsGetJSON<T>(key: string, defaultValue: T): T;
+// We need to use function overloads here
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function lsGetJSON<T>(key: string, defaultValue?: T): T | null {
   try {
     const item = localStorage.getItem(key);

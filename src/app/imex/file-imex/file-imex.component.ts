@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackService } from '../../core/snack/snack.service';
 import { download } from '../../util/download';
+import { getBackupTimestamp } from '../../../../electron/shared-with-frontend/get-backup-timestamp';
 import { DialogImportFromUrlComponent } from '../dialog-import-from-url/dialog-import-from-url.component';
 import { T } from '../../t.const';
 import { TODAY_TAG } from '../../features/tag/tag.const';
@@ -260,7 +261,11 @@ export class FileImexComponent implements OnInit {
 
   async downloadBackup(): Promise<void> {
     const data = await this._backupService.loadCompleteBackup(true);
-    const result = await download('super-productivity-backup.json', JSON.stringify(data));
+    const fileName = `${getBackupTimestamp()}.json`;
+    const result = await download(
+      `super-productivity-backup_${fileName}`,
+      JSON.stringify(data),
+    );
     if ((IS_NATIVE_PLATFORM && !result.wasCanceled) || result.isSnap) {
       this._snackService.open({
         type: 'SUCCESS',
@@ -269,12 +274,15 @@ export class FileImexComponent implements OnInit {
           : T.FILE_IMEX.S_BACKUP_DOWNLOADED,
       });
     }
-    // download('super-productivity-backup.json', privacyExport(data));
   }
 
   async privacyAppDataDownload(): Promise<void> {
     const data = await this._backupService.loadCompleteBackup(true);
-    const result = await download('super-productivity-backup.json', privacyExport(data));
+    const fileName = `${getBackupTimestamp()}.json`;
+    const result = await download(
+      `super-productivity-backup(anonimized)_${fileName}`,
+      privacyExport(data),
+    );
     if ((IS_NATIVE_PLATFORM && !result.wasCanceled) || result.isSnap) {
       this._snackService.open({
         type: 'SUCCESS',

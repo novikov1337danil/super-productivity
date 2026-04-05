@@ -20,8 +20,7 @@ import { ActionType, Operation, OpType } from '../core/operation.types';
 import { CURRENT_SCHEMA_VERSION } from './schema-migration.service';
 import { AppDataComplete } from '../model/model-config';
 import { getBackupTimestamp } from '../../util/get-backup-timestamp';
-
-export const MIGRATION_BACKUP_PREFIX = 'sp-pre-migration-backup';
+import { MIGRATION_BACKUP_PREFIX } from './migration.const';
 
 /**
  * Service to check for valid operation log state during startup and migrate

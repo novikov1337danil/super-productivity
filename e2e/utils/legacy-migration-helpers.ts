@@ -1,6 +1,6 @@
 import { expect, type Browser, type BrowserContext, type Page } from '@playwright/test';
 import { waitForAppReady } from './waits';
-import { MIGRATION_BACKUP_PREFIX } from '../../src/app/op-log/persistence/operation-log-migration.service';
+import { MIGRATION_BACKUP_PREFIX } from '../../src/app/op-log/persistence/migration.const';
 
 /**
  * Legacy Migration E2E Test Helpers
